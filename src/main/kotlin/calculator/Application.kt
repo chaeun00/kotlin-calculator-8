@@ -23,7 +23,18 @@ private fun splitInput(text: String): List<String> {
 }
 
 private fun sumNumbers(numbers: List<String>): Int {
-    return numbers.sumOf { it.toInt() }
+    return numbers
+        .filter { it.isNotBlank() }
+        .map { s ->
+            val number = s.toIntOrNull()
+                ?: throw IllegalArgumentException("입력된 문자열에 숫자 이외의 값(${s})이 포함되어 있습니다.")
+
+            if (number < 0) {
+                throw IllegalArgumentException("음수(${number})는 입력할 수 없습니다.")
+            }
+            number
+        }
+        .sum()
 }
 
 fun main() {
