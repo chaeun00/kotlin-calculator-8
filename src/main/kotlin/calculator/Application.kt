@@ -11,17 +11,19 @@ fun calculate(text: String?): Int {
 }
 
 private fun splitInput(text: String): List<String> {
+    val regex = "//(.*)\n(.*)".toRegex()
+    val matchResult = regex.find(text.replace("\\n", "\n"))
+
+    if (matchResult != null) {
+        val (customDelimiter, numbersPart) = matchResult.destructured
+        return numbersPart.split(customDelimiter)
+    }
+
     return text.split("[,:]".toRegex())
 }
 
 private fun sumNumbers(numbers: List<String>): Int {
-    var sum = 0
-    for (numberStr in numbers) {
-        val num = numberStr.toInt()
-        sum += num
-    }
-
-    return sum
+    return numbers.sumOf { it.toInt() }
 }
 
 fun main() {
